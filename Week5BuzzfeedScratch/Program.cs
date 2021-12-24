@@ -18,7 +18,7 @@ namespace Week5BuzzfeedScratch
             Quizzes quiz = new Quizzes();
 
             //connect to database and create variable "connection" in order to access the connection
-            SqlConnection connection = new SqlConnection(@"CONNECTIONINFO");
+            SqlConnection connection = new SqlConnection(@"");
 
             //Ask user if they'd like to make a quiz, thus opening while loop or skipping it
             Console.WriteLine("Would you like to make a quiz? Y)es or N)o");
@@ -58,8 +58,24 @@ namespace Week5BuzzfeedScratch
                     Console.WriteLine($"Your Quiz, '{quiz.name}' is Quiz #{quiz.id}!");
 
                     //set number of questions here
-                    Console.WriteLine("How many questions would you like to ask in this quiz?");
-                    quiz.questionsCount = Convert.ToInt32(Console.ReadLine());
+                    quiz.questionsCount = 0;
+                    bool canConvert;
+
+                    do
+                    {
+                        Console.WriteLine("How many questions would you like to ask in this quiz?");
+                        string ans = Console.ReadLine();
+                        canConvert = int.TryParse(ans, out quiz.questionsCount);
+                        if (canConvert != true)
+                        {
+                            Console.WriteLine("Sorry, try again. This time type a number like 8");
+                        }
+                        else if (canConvert == true)
+                        {
+                            quiz.questionsCount = Convert.ToInt32(ans);
+                        }
+
+                    } while (canConvert != true);
 
                     //how do you catch an error? try/catch block??
 
@@ -93,6 +109,9 @@ namespace Week5BuzzfeedScratch
             connection.Close();
 
         }
+
+
+
         static void CreateQuiz(string quizName, SqlConnection connection)
         {
             
